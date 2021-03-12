@@ -1,8 +1,6 @@
 import React from 'react'
 import popcorn from '../assets/img/popcorn.svg'
 
-import './Header.scss'
-
 const Header: React.SFC = () => (
   <header className="header container">
     <div className="header__logo">
