@@ -4,8 +4,8 @@ import popcorn from '../assets/img/popcorn.svg'
 import './Header.scss'
 
 const Header: React.SFC = () => (
-  <header className="header">
-    <div className="header__logo mr-4">
+  <header className="header container">
+    <div className="header__logo">
       <img src={popcorn} alt="Logo" />
     </div>
     <h1 className="header__title">

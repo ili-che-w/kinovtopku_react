@@ -1,10 +1,10 @@
 import React from 'react'
 
 import Config from '../config'
-import {IFilm} from '../film.model'
+import { IFilm } from '../film.model'
 
 interface IProps {
-    films: IFilm[]
+  films: IFilm[]
 }
 
 const FilmsList: React.SFC<IProps> = (props) => (
@@ -25,12 +25,14 @@ const FilmsList: React.SFC<IProps> = (props) => (
           </div>
           <div className="col-9">
             <h3 className="film__title">{film.title}</h3>
-            <div className="film__info">Release date: {film.release_date}</div>
-            {film.overview ? (
-              <p className="film__overview">{film.overview}</p>
-            ) : (
-              <p>No film description</p>
-            )}
+            <div className="film__info">
+              Release date: {film.release_date || 'unknown'} |
+              Votes: {film.vote_count} |
+              Rating: {film.vote_average}
+            </div>
+            <p className="film__overview">
+              {film.overview || <i>No film description</i>}
+            </p>
           </div>
         </div>
       </li>
@@ -39,7 +41,7 @@ const FilmsList: React.SFC<IProps> = (props) => (
 )
 
 FilmsList.defaultProps = {
-    films: []
+  films: []
 }
 
 export default FilmsList
