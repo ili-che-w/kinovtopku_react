@@ -44,7 +44,9 @@ const App: React.SFC = () => {
       <div className="container">
         <BrowserRouter>
           <Switch>
-            <Route path="/film/:id" component={FilmView} />
+            <Route path="/film/:id">
+              <FilmView films={films}/>
+            </Route>
             <Route path="/">
               <FilmsList films={films} />
             </Route>
