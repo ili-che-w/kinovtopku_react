@@ -1,4 +1,14 @@
-# Getting Started with Create React App
+# Kino V Topku
+
+The **Kino V Topku** app is designed to let all the world know about the very best (no) mopvies ever created in the world.
+
+This is a far-from-perfection version of the app. **Not released** yet:
+
+* Filters (by year, type)
+* Detailed information on movie's cast and crew
+* Carousel
+
+---
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
