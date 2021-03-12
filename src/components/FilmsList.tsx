@@ -1,18 +1,16 @@
 import React from 'react'
+
+import Config from '../config'
 import {IFilm} from '../film.model'
 
 interface IProps {
     films: IFilm[]
 }
 
-const Config = {
-  imgBaseUrl: 'https://image.tmdb.org/t/p/w200'
-}
-
 const FilmsList: React.SFC<IProps> = (props) => (
   <ul className="films">
-    {props.films.map((film) => (
-      <li className="film my-4">
+    {props.films.map((film, idx) => (
+      <li className="film my-4" key={idx}>
         <div className="row" key={film.id}>
           <div className="col-3 film__image">
             {film.poster_path ? (
