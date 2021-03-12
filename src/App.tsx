@@ -21,13 +21,6 @@ const App: React.SFC = () => {
   const [films, setFilms]: [IFilm[], (films: IFilm[]) => void] = React.useState(
     Config.defaultFilms
   )
-
-  // If I would like a loader
-  // const [loading, setLoading]: [
-  //   boolean,
-  //   (loading: boolean) => void
-  // ] = React.useState<boolean>(true)
-
   const [error, setError]: [string, (error: string) => void] = React.useState(
     ''
   )
@@ -37,15 +30,9 @@ const App: React.SFC = () => {
       .get<IResult>(url, headers)
       .then((response) => {
         setFilms(response.data.results)
-        // setLoading(false)
       })
-      .catch((ex) => {
-        const err =
-          ex.response.status === 404
-            ? 'Resource not found'
-            : 'An unexpected error occured'
+      .catch((err) => {
         setError(err)
-        // setLoading(false)
       })
   })
 
