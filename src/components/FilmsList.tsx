@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import Config from '../config'
 import { IFilm } from '../film.model'
@@ -24,13 +25,14 @@ const FilmsList: React.SFC<IProps> = (props) => (
             )}
           </div>
           <div className="col-9">
-            <h3 className="film__title">{film.title}</h3>
+            <h3 className="film__title">
+              <Link to={`/film/${film.id}`}>{film.title}</Link>
+            </h3>
             <div className="film__info">
-              Release date: {film.release_date || 'unknown'} |
-              Votes: {film.vote_count} |
-              Rating: {film.vote_average}
+              Release date: {film.release_date || 'unknown'} | Votes:{' '}
+              {film.vote_count} | Rating: {film.vote_average}
             </div>
-            <p className="film__overview">
+            <p className="film__overview text-justify">
               {film.overview || <i>No film description</i>}
             </p>
           </div>

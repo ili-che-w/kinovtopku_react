@@ -1,11 +1,14 @@
 import React from 'react'
-import './App.scss'
 import axios from 'axios'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+
+import './App.scss'
 
 import Config from './config'
-import {IFilm} from './film.model'
-import FilmsList from './components/FilmsList'
+import { IFilm } from './film.model'
 import Header from './components/Header'
+import FilmView from './components/FilmView'
+import FilmsList from './components/FilmsList'
 
 interface IResult {
   results: IFilm[]
@@ -52,7 +55,14 @@ const App: React.SFC = () => {
         <Header />
       </div>
       <div className="container">
-        <FilmsList films={films} />
+        <BrowserRouter>
+          <Switch>
+            <Route path="/film/:id" component={FilmView} />
+            <Route path="/">
+              <FilmsList films={films} />
+            </Route>
+          </Switch>
+        </BrowserRouter>
       </div>
       {error && <p className="error">{error}</p>}
     </div>
