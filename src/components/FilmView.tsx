@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 
 import Config from '../config'
 import { IFilm } from '../film.model'
+import { IFilmExt } from '../filmExt.model'
 
 interface IProps {
   films: IFilm[]
