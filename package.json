@@ -45,6 +45,8 @@
     ]
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.1.7"
+    "@types/react-image-gallery": "^1.0.2",
+    "@types/react-router-dom": "^5.1.7",
+    "react-image-gallery": "^1.0.9"
   }
 }

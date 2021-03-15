@@ -1,54 +1,93 @@
 import axios from 'axios'
 import React from 'react'
 import { useParams } from 'react-router-dom'
+import ImageGallery from 'react-image-gallery'
 
 import Config from '../config'
-import { IFilm } from '../film.model'
-import { IFilmExt } from '../filmExt.model'
-
-interface IProps {
-  films: IFilm[]
-}
+import { IFilmExt, Image } from '../filmExt.model'
 
 interface RouteParams {
   id: string
 }
 
-const FilmView: React.SFC<IProps> = (props) => {
+const FilmView: React.SFC = () => {
   const { id } = useParams<RouteParams>()
 
   const [currentFilm, setCurrentFilm]: [
-    IFilm,
-    (films: IFilm) => void
+    IFilmExt,
+    (films: IFilmExt) => void
   ] = React.useState(Config.defaultFilm)
+  const [error, setError]: [string, (error: string) => void] = React.useState(
+    ''
+  )
 
-  const url = Config.API.baseUrl + `/movie/${id}?api_key=${Config.API.key}`
+  function extractFilePaths(images: Image[]): string[] {
+    return images.map((img) => img.file_path)
+  }
+  function getBackdropsAndPostersPaths(film: IFilmExt): string[] {
+    return extractFilePaths(currentFilm.images.backdrops).concat(
+      extractFilePaths(currentFilm.images.posters)
+    )
+  }
+  function transformItemForImageGallery(filePath: string) {
+    return {
+      original: Config.imgBaseUrl500 + filePath,
+      thumbnail: Config.imgBaseUrl + filePath
+    }
+  }
+  function getItemsForGallery(film: IFilmExt): any[] {
+    return getBackdropsAndPostersPaths(currentFilm).map((img) =>
+      transformItemForImageGallery(img)
+    )
+  }
+
+  const url =
+    Config.API.baseUrl +
+    `/movie/${id}?api_key=${Config.API.key}&append_to_response=images`
+
   React.useEffect(() => {
-    axios.get<IFilm>(url).then((response) => {
-      setCurrentFilm(response.data)
-    })
+    axios
+      .get<IFilmExt>(url)
+      .then((response) => {
+        setCurrentFilm(response.data)
+      })
+      .catch((err) => {
+        setError(err.message)
+      })
   })
 
   return (
     <div className="film-card">
-      <div className="row">
-        <div className="col-md-3 film-card__poster">
-          {currentFilm.poster_path ? (
-            <img
-              src={Config.imgBaseUrl + currentFilm.poster_path}
-              alt="Film poster"
-            />
-          ) : (
-            <span>No image</span>
-          )}
+      {error ? (
+        <p className="error">{error}</p>
+      ) : (
+        <div className="row">
+          <div className="col-md-3 film-card__poster">
+            {currentFilm.poster_path ? (
+              <img
+                src={Config.imgBaseUrl + currentFilm.poster_path}
+                alt="Film poster"
+              />
+            ) : (
+              <span>No image</span>
+            )}
+          </div>
+          <div className="col-md-9 film-card__details">
+            <h2 className="film-card__title">{currentFilm.title}</h2>
+            <p className="film-card__overview text-justify">
+              {currentFilm.overview || <i>No film description</i>}
+            </p>
+
+            <h3>Backdrops</h3>
+            {currentFilm.images.backdrops.length &&
+            currentFilm.images.posters.length ? (
+              <ImageGallery items={getItemsForGallery(currentFilm)} />
+            ) : (
+              <i>No images</i>
+            )}
+          </div>
         </div>
-        <div className="col-md-9 film-card__details">
-          <h2 className="film-card__title">{currentFilm.title}</h2>
-          <p className="film-card__overview text-justify">
-            {currentFilm.overview || <i>No film description</i>}
-          </p>
-        </div>
-      </div>
+      )}
     </div>
   )
 }
