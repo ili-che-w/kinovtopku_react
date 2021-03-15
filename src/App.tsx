@@ -14,16 +14,15 @@ interface IResult {
   results: IFilm[]
 }
 
-const App: React.SFC = () => {
+const App: React.FC = () => {
   const url = Config.url
   const headers = Config.headers
 
-  const [films, setFilms]: [IFilm[], (films: IFilm[]) => void] = React.useState(
-    Config.defaultFilms
-  )
-  const [error, setError]: [string, (error: string) => void] = React.useState(
-    ''
-  )
+  const [films, setFilms] = React.useState<IFilm[]>([])
+  const [error, setError] = React.useState<string>('')
+  // const [error, setError]: [string, (error: string) => void] = React.useState(
+  //   ''
+  // )
 
   React.useEffect(() => {
     axios
@@ -32,17 +31,17 @@ const App: React.SFC = () => {
         setFilms(response.data.results)
       })
       .catch((err) => {
-        setError(err)
+        setError(err.message)
       })
   })
 
   return (
     <div className="App">
-      <div className="jumbotron">
-        <Header />
-      </div>
-      <div className="container">
-        <BrowserRouter>
+      <BrowserRouter>
+        <div className="jumbotron">
+          <Header />
+        </div>
+        <div className="container">
           <Switch>
             <Route path="/film/:id">
               <FilmView />
@@ -51,9 +50,9 @@ const App: React.SFC = () => {
               <FilmsList films={films} />
             </Route>
           </Switch>
-        </BrowserRouter>
-      </div>
-      {error && <p className="error">{error}</p>}
+        </div>
+        {error && <p className="error">{error}</p>}
+      </BrowserRouter>
     </div>
   )
 }

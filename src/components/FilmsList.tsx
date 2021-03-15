@@ -8,7 +8,7 @@ interface IProps {
   films: IFilm[]
 }
 
-const FilmsList: React.SFC<IProps> = (props) => (
+const FilmsList: React.FC<IProps> = (props) => (
   <ul className="films">
     {props.films.map((film, idx) => (
       <li className="film my-4" key={idx}>

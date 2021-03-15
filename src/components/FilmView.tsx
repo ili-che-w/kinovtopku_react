@@ -10,23 +10,18 @@ interface RouteParams {
   id: string
 }
 
-const FilmView: React.SFC = () => {
+const FilmView: React.FC = () => {
   const { id } = useParams<RouteParams>()
 
-  const [currentFilm, setCurrentFilm]: [
-    IFilmExt,
-    (films: IFilmExt) => void
-  ] = React.useState(Config.defaultFilm)
-  const [error, setError]: [string, (error: string) => void] = React.useState(
-    ''
-  )
+  const [currentFilm, setCurrentFilm] = React.useState<IFilmExt>({} as IFilmExt)
+  const [error, setError] = React.useState<string>('')
 
   function extractFilePaths(images: Image[]): string[] {
     return images.map((img) => img.file_path)
   }
   function getBackdropsAndPostersPaths(film: IFilmExt): string[] {
-    return extractFilePaths(currentFilm.images.backdrops).concat(
-      extractFilePaths(currentFilm.images.posters)
+    return extractFilePaths(film.images.backdrops).concat(
+      extractFilePaths(film.images.posters)
     )
   }
   function transformItemForImageGallery(filePath: string) {
@@ -36,7 +31,7 @@ const FilmView: React.SFC = () => {
     }
   }
   function getItemsForGallery(film: IFilmExt): any[] {
-    return getBackdropsAndPostersPaths(currentFilm).map((img) =>
+    return getBackdropsAndPostersPaths(film).map((img) =>
       transformItemForImageGallery(img)
     )
   }
@@ -79,7 +74,8 @@ const FilmView: React.SFC = () => {
             </p>
 
             <h3>Backdrops</h3>
-            {currentFilm.images.backdrops.length &&
+            {currentFilm.images &&
+            currentFilm.images.backdrops.length &&
             currentFilm.images.posters.length ? (
               <ImageGallery items={getItemsForGallery(currentFilm)} />
             ) : (
