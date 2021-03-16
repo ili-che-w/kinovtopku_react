@@ -1,57 +1,39 @@
 import React from 'react'
-import axios from 'axios'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
-import './App.scss'
-
-import Config from './config'
-import { IFilm } from './film.model'
 import Header from './components/Header'
 import FilmView from './components/FilmView'
 import FilmsList from './components/FilmsList'
+import APIProvider, { APIContext } from './ApiContext'
+import { ContextType } from './types'
 
-interface IResult {
-  results: IFilm[]
-}
+import './App.scss'
 
 const App: React.FC = () => {
-  const url = Config.url
-  const headers = Config.headers
-
-  const [films, setFilms] = React.useState<IFilm[]>([])
-  const [error, setError] = React.useState<string>('')
-  // const [error, setError]: [string, (error: string) => void] = React.useState(
-  //   ''
-  // )
+  const { fetchFilms } = React.useContext(APIContext) as ContextType
 
   React.useEffect(() => {
-    axios
-      .get<IResult>(url, headers)
-      .then((response) => {
-        setFilms(response.data.results)
-      })
-      .catch((err) => {
-        setError(err.message)
-      })
-  })
+    fetchFilms()
+  }, [fetchFilms])
 
   return (
-    <div className="App">
+    <div className='App'>
       <BrowserRouter>
-        <div className="jumbotron">
+        <div className='jumbotron'>
           <Header />
         </div>
-        <div className="container">
-          <Switch>
-            <Route path="/film/:id">
-              <FilmView />
-            </Route>
-            <Route path="/">
-              <FilmsList films={films} />
-            </Route>
-          </Switch>
+        <div className='container'>
+          <APIProvider>
+            <Switch>
+              <Route path='/film/:id'>
+                <FilmView />
+              </Route>
+              <Route path='/'>
+                <FilmsList />
+              </Route>
+            </Switch>
+          </APIProvider>
         </div>
-        {error && <p className="error">{error}</p>}
       </BrowserRouter>
     </div>
   )
