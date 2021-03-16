@@ -6,7 +6,12 @@ import { APIContext } from '../ApiContext'
 import { ContextType } from '../types'
 
 const FilmsList: React.FC = () => {
-  const { films } = React.useContext(APIContext) as ContextType
+  const { films, fetchFilms } = React.useContext(APIContext) as ContextType
+
+  React.useEffect(() => {
+    fetchFilms()
+  }, [fetchFilms])
+
   return (
     <ul className='films'>
       {films.map((film, idx) => (

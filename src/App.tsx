@@ -10,12 +10,6 @@ import { ContextType } from './types'
 import './App.scss'
 
 const App: React.FC = () => {
-  const { fetchFilms } = React.useContext(APIContext) as ContextType
-
-  React.useEffect(() => {
-    fetchFilms()
-  }, [fetchFilms])
-
   return (
     <div className='App'>
       <BrowserRouter>
